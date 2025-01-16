@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Games</title>
+  <style>
+    /* General Body Styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a2e;
+      color: #fff;
+    }
+
+    /* Header Styling */
+    header {
+      display: flex;
+      align-items: center;
+      background-color: #162447;
+      padding: 10px 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    header img {
+      width: 50px;
+      margin-right: 10px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #e43f5a;
+    }
+    header input {
+      margin-left: auto;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    /* Section Titles */
+    h2 {
+      text-align: center;
+      color: #e43f5a;
+      margin: 20px 0;
+    }
+
+    /* Game Grid Styling */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Game Card Styling */
+    .game-card {
+      background-color: #162447;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    .game-card:hover {
+      transform: scale(1.05);
+    }
+    .game-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .game-card h3 {
+      margin: 10px 0;
+      color: #fff;
+    }
+    .game-card p {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    .game-card a {
+      display: block;
+      background-color: #e43f5a;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+    .game-card a:hover {
+      background-color: #f05365;
+    }
+
+    /* Footer Styling */
+    footer {
+      background-color: #162447;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #e43f5a;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      header {
+        flex-wrap: wrap;
+      }
+      header h1 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      header input {
+        width: 100%;
+      }
+      .game-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      header img {
+        width: 40px;
+      }
+      header h1 {
+        font-size: 18px;
+      }
+      .game-card h3 {
+        font-size: 16px;
+      }
+      .game-card p {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header img {
+        width: 30px;
+      }
+      header h1 {
+        font-size: 16px;
+      }
+      .game-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+      .game-card h3 {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="star-logo.png" alt="Star Games Logo">
+    <h1>Star Games</h1>
+    <input type="text" id="searchInput" placeholder="Search games...">
+  </header>
+
+  <!-- All Games Section -->
+  <div class="section" id="allGamesSection">
+    <h2>All Games</h2>
+    <div class="game-grid" id="gameGrid"></div>
+  </div>
+
+  <footer>
+    <p>
+      Welcome to <strong>Star Games</strong> – your ultimate destination to explore, upload, and play amazing games. 
+      Have questions? <a href="mailto:support@stargames.com">Contact us</a>.
+    </p>
+  </footer>
+
+  <script>
+    const games = JSON.parse(localStorage.getItem('games')) || [];
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const gameGrid = document.getElementById('gameGrid');
+
+    searchInput.addEventListener('input', function () {
+      const searchText = searchInput.value.toLowerCase();
+      renderGames(games.filter(game => game.title.toLowerCase().includes(searchText)));
+    });
+
+    // Render games
+    function renderGames(filteredGames) {
+      gameGrid.innerHTML = '';
+      filteredGames.forEach(game => {
+        const gameCard = document.createElement('div');
+        gameCard.classList.add('game-card');
+        gameCard.innerHTML = `
+          <img src="${game.image}" alt="${game.title}">
+          <h3>${game.title}</h3>
+          <p>Size: ${game.size}</p>
+          <a href="game1.html" onclick="playGame('${game.title}')">Play Now</a>
+        `;
+        gameGrid.appendChild(gameCard);
+      });
+    }
+
+    // Save selected game
+    function playGame(gameTitle) {
+      const selectedGame = games.find(game => game.title === gameTitle);
+      localStorage.setItem('selectedGame', JSON.stringify(selectedGame));
+    }
+
+    // Initial render
+    renderGames(games);
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a2e;
+      color: #fff;
+    }
+    header {
+      background-color: #162447;
+      padding: 10px 20px;
+      text-align: center;
+      color: #e43f5a;
+      font-size: 24px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    form {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #162447;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    form label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    form select, form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: none;
+    }
+    form button {
+      padding: 10px 20px;
+      background-color: #e43f5a;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    form button:hover {
+      background-color: #f05365;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Edit Game Details
+  </header>
+
+  <form id="editForm">
+    <label for="gameSelect">Select a Game to Edit</label>
+    <select id="gameSelect">
+      <option value="">Select a game</option>
+    </select>
+
+    <label for="title">Game Title</label>
+    <input type="text" id="title" placeholder="Enter game title" required>
+
+    <label for="image">Game Image (URL)</label>
+    <input type="text" id="image" placeholder="Enter image URL" required>
+
+    <label for="tags">Game Tags (comma-separated)</label>
+    <input type="text" id="tags" placeholder="e.g., action, puzzle, multiplayer" required>
+
+    <label for="size">Game Size</label>
+    <input type="text" id="size" placeholder="Enter game size (e.g., 10MB)" required>
+
+    <label for="height">Game Height (px)</label>
+    <input type="number" id="height" placeholder="Enter game height in pixels" required>
+
+    <label for="width">Game Width (px)</label>
+    <input type="number" id="width" placeholder="Enter game width in pixels" required>
+
+    <label for="link">Game Link or Code</label>
+    <textarea id="link" placeholder="Enter game link or iframe code" required></textarea>
+
+    <button type="submit">Save Changes</button>
+  </form>
+
+  <script>
+    const games = JSON.parse(localStorage.getItem('games')) || [];
+    const gameSelect = document.getElementById('gameSelect');
+    const editForm = document.getElementById('editForm');
+
+    const titleInput = document.getElementById('title');
+    const imageInput = document.getElementById('image');
+    const tagsInput = document.getElementById('tags');
+    const sizeInput = document.getElementById('size');
+    const heightInput = document.getElementById('height');
+    const widthInput = document.getElementById('width');
+    const linkInput = document.getElementById('link');
+
+    // Populate the dropdown with existing games
+    games.forEach((game, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = game.title;
+      gameSelect.appendChild(option);
+    });
+
+    // Load selected game details into the form
+    gameSelect.addEventListener('change', () => {
+      const selectedIndex = gameSelect.value;
+      if (selectedIndex !== '') {
+        const game = games[selectedIndex];
+        titleInput.value = game.title;
+        imageInput.value = game.image;
+        tagsInput.value = game.tags.join(', ');
+        sizeInput.value = game.size;
+        heightInput.value = game.height;
+        widthInput.value = game.width;
+        linkInput.value = game.link;
+      } else {
+        editForm.reset();
+      }
+    });
+
+    // Save changes to the game
+    editForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const selectedIndex = gameSelect.value;
+      if (selectedIndex === '') {
+        alert('Please select a game to edit.');
+        return;
+      }
+
+      const updatedGame = {
+        title: titleInput.value.trim(),
+        image: imageInput.value.trim(),
+        tags: tagsInput.value.trim().split(',').map(tag => tag.trim()),
+        size: sizeInput.value.trim(),
+        height: heightInput.value.trim(),
+        width: widthInput.value.trim(),
+        link: linkInput.value.trim()
+      };
+
+      games[selectedIndex] = updatedGame;
+      localStorage.setItem('games', JSON.stringify(games));
+
+      alert('Game details updated successfully!');
+      location.reload();
+    });
+  </script>
+</body>
+</html>

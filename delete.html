@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a2e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #e43f5a;
+    }
+    form {
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      width: 40%;
+      padding: 10px;
+      background-color: #e43f5a;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #f05365;
+    }
+    .game-details {
+      text-align: center;
+      margin-top: 20px;
+      background-color: #162447;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    .game-details img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    .delete-button {
+      margin-top: 10px;
+      background-color: #e43f5a;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .delete-button:hover {
+      background-color: #f05365;
+    }
+  </style>
+</head>
+<body>
+  <h1>Delete a Game</h1>
+  <form id="searchForm">
+    <input type="text" id="gameName" placeholder="Enter Game Name" required>
+    <button type="submit">Search Game</button>
+  </form>
+  <div id="gameDetails"></div>
+
+  <script>
+    const searchForm = document.getElementById('searchForm');
+    const gameDetails = document.getElementById('gameDetails');
+
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const gameName = document.getElementById('gameName').value.trim();
+      const games = JSON.parse(localStorage.getItem('games')) || [];
+      const game = games.find(g => g.title.toLowerCase() === gameName.toLowerCase());
+
+      if (game) {
+        gameDetails.innerHTML = `
+          <div class="game-details">
+            <h2>${game.title}</h2>
+            <img src="${game.image}" alt="${game.title}">
+            <p>Size: ${game.size}</p>
+            <button class="delete-button" onclick="deleteGame('${game.title}')">Delete Game</button>
+          </div>
+        `;
+      } else {
+        gameDetails.innerHTML = `<p style="color: red;">Game not found!</p>`;
+      }
+    });
+
+    function deleteGame(gameTitle) {
+      const games = JSON.parse(localStorage.getItem('games')) || [];
+      const updatedGames = games.filter(game => game.title.toLowerCase() !== gameTitle.toLowerCase());
+      localStorage.setItem('games', JSON.stringify(updatedGames));
+
+      alert(`${gameTitle} has been deleted successfully!`);
+      gameDetails.innerHTML = '';
+      document.getElementById('gameName').value = '';
+    }
+  </script>
