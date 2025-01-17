@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Star Games</title>
   <style>
-    /* General Body Styling */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -13,51 +12,58 @@
       background-color: #1a1a2e;
       color: #fff;
     }
-
-    /* Header Styling */
     header {
-      display: flex;
-      align-items: center;
       background-color: #162447;
       padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-    }
-    header img {
-      width: 50px;
-      margin-right: 10px;
     }
     header h1 {
       margin: 0;
       font-size: 24px;
       color: #e43f5a;
+      display: flex;
+      align-items: center;
     }
-    header input {
-      margin-left: auto;
-      padding: 8px 12px;
+    header h1 img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #fff;
       font-size: 16px;
-      border: none;
+      padding: 10px 20px;
+      background-color: #e43f5a;
       border-radius: 5px;
-      outline: none;
+      transition: background-color 0.3s ease;
     }
-
-    /* Section Titles */
-    h2 {
-      text-align: center;
+    nav a:hover {
+      background-color: #f05365;
+    }
+    .game-section {
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+    .game-category {
+      margin-bottom: 40px;
+    }
+    .game-category h2 {
       color: #e43f5a;
-      margin: 20px 0;
+      text-align: center;
     }
-
-    /* Game Grid Styling */
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
     }
-
-    /* Game Card Styling */
     .game-card {
       background-color: #162447;
       padding: 10px;
@@ -77,10 +83,6 @@
       margin: 10px 0;
       color: #fff;
     }
-    .game-card p {
-      color: #aaa;
-      font-size: 0.9rem;
-    }
     .game-card a {
       display: block;
       background-color: #e43f5a;
@@ -94,128 +96,97 @@
     .game-card a:hover {
       background-color: #f05365;
     }
-
-    /* Footer Styling */
     footer {
       background-color: #162447;
-      color: #aaa;
       text-align: center;
       padding: 20px;
-      margin-top: 20px;
-      font-size: 0.9rem;
-    }
-    footer a {
       color: #e43f5a;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-      header {
-        flex-wrap: wrap;
-      }
-      header h1 {
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
-      header input {
-        width: 100%;
-      }
-      .game-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      }
-    }
-
-    @media (max-width: 768px) {
-      header img {
-        width: 40px;
-      }
-      header h1 {
-        font-size: 18px;
-      }
-      .game-card h3 {
-        font-size: 16px;
-      }
-      .game-card p {
-        font-size: 0.8rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      header img {
-        width: 30px;
-      }
-      header h1 {
-        font-size: 16px;
-      }
-      .game-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      }
-      .game-card h3 {
-        font-size: 14px;
-      }
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="star-logo.png" alt="Star Games Logo">
-    <h1>Star Games</h1>
-    <input type="text" id="searchInput" placeholder="Search games...">
+    <h1>
+      <img src="star-logo.png" alt="Star Games Logo">
+      Star Games
+    </h1>
+    <nav>
+      <a href="upload.html">Upload Game</a>
+      <a href="delete.html">Delete Game</a>
+      <a href="edit.html">Edit Game</a>
+    </nav>
   </header>
 
-  <!-- All Games Section -->
-  <div class="section" id="allGamesSection">
-    <h2>All Games</h2>
-    <div class="game-grid" id="gameGrid"></div>
+  <div class="game-section">
+    <!-- All Games Section -->
+    <div class="game-category">
+      <h2>All Games</h2>
+      <div class="game-grid" id="allGamesGrid"></div>
+    </div>
+
+    <!-- Popular Games Section -->
+    <div class="game-category">
+      <h2>Popular Games</h2>
+      <div class="game-grid" id="popularGamesGrid"></div>
+    </div>
+
+    <!-- Amazing Games Section -->
+    <div class="game-category">
+      <h2>Amazing Games</h2>
+      <div class="game-grid" id="amazingGamesGrid"></div>
+    </div>
+
+    <!-- Cool Games Section -->
+    <div class="game-category">
+      <h2>Cool Games</h2>
+      <div class="game-grid" id="coolGamesGrid"></div>
+    </div>
   </div>
 
   <footer>
-    <p>
-      Welcome to <strong>Star Games</strong> – your ultimate destination to explore, upload, and play amazing games. 
-      Have questions? <a href="mailto:support@stargames.com">Contact us</a>.
-    </p>
+    <p>Welcome to Star Games! Your destination for the coolest games. Play, enjoy, and explore the best gaming collection.</p>
   </footer>
 
   <script>
     const games = JSON.parse(localStorage.getItem('games')) || [];
 
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    const gameGrid = document.getElementById('gameGrid');
+    const allGamesGrid = document.getElementById('allGamesGrid');
+    const popularGamesGrid = document.getElementById('popularGamesGrid');
+    const amazingGamesGrid = document.getElementById('amazingGamesGrid');
+    const coolGamesGrid = document.getElementById('coolGamesGrid');
 
-    searchInput.addEventListener('input', function () {
-      const searchText = searchInput.value.toLowerCase();
-      renderGames(games.filter(game => game.title.toLowerCase().includes(searchText)));
-    });
-
-    // Render games
-    function renderGames(filteredGames) {
-      gameGrid.innerHTML = '';
-      filteredGames.forEach(game => {
+    function displayGames(games, container) {
+      container.innerHTML = '';
+      games.forEach(game => {
         const gameCard = document.createElement('div');
         gameCard.classList.add('game-card');
         gameCard.innerHTML = `
           <img src="${game.image}" alt="${game.title}">
           <h3>${game.title}</h3>
-          <p>Size: ${game.size}</p>
-          <a href="game1.html" onclick="playGame('${game.title}')">Play Now</a>
+          <a href="#" onclick="playGame('${game.title}')">Play Now</a>
         `;
-        gameGrid.appendChild(gameCard);
+        container.appendChild(gameCard);
       });
     }
 
-    // Save selected game
     function playGame(gameTitle) {
       const selectedGame = games.find(game => game.title === gameTitle);
       localStorage.setItem('selectedGame', JSON.stringify(selectedGame));
+      window.location.href = 'game1.html';
     }
 
-    // Initial render
-    renderGames(games);
+    // Display all games
+    displayGames(games, allGamesGrid);
+
+    // Display categorized games
+    const popularGames = games.filter(game => game.tags.includes('popular'));
+    const amazingGames = games.filter(game => game.tags.includes('amazing'));
+    const coolGames = games.filter(game => game.tags.includes('cool'));
+
+    displayGames(popularGames, popularGamesGrid);
+    displayGames(amazingGames, amazingGamesGrid);
+    displayGames(coolGames, coolGamesGrid);
   </script>
 </body>
-</html>
+  </html></html>
